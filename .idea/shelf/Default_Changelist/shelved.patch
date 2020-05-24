@@ -1,0 +1,284 @@
+Index: app/src/main/java/com/example/newssecond/MovieAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.newssecond\r\n\r\nimport android.content.Context\r\nimport android.content.Intent\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.widget.ImageView\r\nimport android.widget.TextView\r\nimport androidx.recyclerview.widget.RecyclerView\r\nimport com.bumptech.glide.Glide\r\nimport com.odhiambopaul.movies.ui.detail.DeleteExample\r\n\r\n\r\nclass MoviesAdapter(val movies: List<Result>, private val context: Context) :\r\n    RecyclerView.Adapter<MoviesViewHolder>() {\r\n    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {\r\n        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)\r\n        return MoviesViewHolder(view)\r\n    }\r\n\r\n    override fun getItemCount(): Int {\r\n        return movies.size\r\n    }\r\n\r\n    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {\r\n        holder.itemView.setOnClickListener {\r\n            val intent = Intent(context, DeleteExample::class.java).also {\r\n                it.putExtra(\r\n                    \"poster\",\r\n                    \"https://image.tmdb.org/t/p/w500/\" + movies[position].poster_path\r\n                )\r\n                it.putExtra(\"title\", movies[position].title)\r\n                it.putExtra(\"release\", movies[position].release_date)\r\n                it.putExtra(\"overview\", movies[position].overview)\r\n                it.putExtra(\"rating\", movies[position].vote_average)\r\n            }\r\n            context.startActivity(intent)\r\n        }\r\n        return holder.bind(movies[position])\r\n    }\r\n}\r\n\r\nclass MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {\r\n    private val photo: ImageView = itemView.findViewById(R.id.movie_photo)\r\n    private val title: TextView = itemView.findViewById(R.id.movie_title)\r\n    private val overview: TextView = itemView.findViewById(R.id.movie_overview)\r\n    private val rating: TextView = itemView.findViewById(R.id.movie_rating)\r\n\r\n    fun bind(movie: Result) {\r\n        Glide.with(itemView.context).load(\"https://image.tmdb.org/t/p/w500/\" + movie.poster_path)\r\n            .into(photo)\r\n        title.text = \"Title: \" + movie.title\r\n        overview.text = \"Overview: \" + movie.overview\r\n        rating.text = \"Rating: \" + movie.vote_average.toString()\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/newssecond/MovieAdapter.kt	(revision 61a4c978ac69ba994ef57334880886fe51db07b6)
++++ app/src/main/java/com/example/newssecond/MovieAdapter.kt	(date 1590336867710)
+@@ -1,5 +1,6 @@
+ package com.example.newssecond
+ 
++import android.annotation.SuppressLint
+ import android.content.Context
+ import android.content.Intent
+ import android.view.LayoutInflater
+@@ -12,7 +13,7 @@
+ import com.odhiambopaul.movies.ui.detail.DeleteExample
+ 
+ 
+-class MoviesAdapter(val movies: List<Result>, private val context: Context) :
++class MoviesAdapter(private val movies: List<Result>, private val context: Context) :
+     RecyclerView.Adapter<MoviesViewHolder>() {
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
+         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
+@@ -25,7 +26,7 @@
+ 
+     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
+         holder.itemView.setOnClickListener {
+-            val intent = Intent(context, DeleteExample::class.java).also {
++            val intent = Intent(context, MovieDetail::class.java).also {
+                 it.putExtra(
+                     "poster",
+                     "https://image.tmdb.org/t/p/w500/" + movies[position].poster_path
+@@ -33,7 +34,7 @@
+                 it.putExtra("title", movies[position].title)
+                 it.putExtra("release", movies[position].release_date)
+                 it.putExtra("overview", movies[position].overview)
+-                it.putExtra("rating", movies[position].vote_average)
++                it.putExtra("rating", movies[position].vote_average.toString())
+             }
+             context.startActivity(intent)
+         }
+@@ -47,6 +48,7 @@
+     private val overview: TextView = itemView.findViewById(R.id.movie_overview)
+     private val rating: TextView = itemView.findViewById(R.id.movie_rating)
+ 
++    @SuppressLint("SetTextI18n")
+     fun bind(movie: Result) {
+         Glide.with(itemView.context).load("https://image.tmdb.org/t/p/w500/" + movie.poster_path)
+             .into(photo)
+Index: app/src/main/res/layout/movie_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\">\r\n\r\n    <androidx.cardview.widget.CardView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_margin=\"10dp\">\r\n\r\n        <RelativeLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\">\r\n\r\n            <ImageView\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"240dp\"\r\n                android:layout_centerHorizontal=\"true\"\r\n                android:id=\"@+id/movie_photo\"\r\n                android:scaleType=\"centerCrop\"\r\n                android:contentDescription=\"Movie Image\" />\r\n\r\n            <TextView\r\n                android:layout_below=\"@+id/movie_photo\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:id=\"@+id/movie_title\"\r\n                android:layout_margin=\"5dp\"\r\n                android:textSize=\"15sp\"\r\n                android:text=\"Title : \"/>\r\n\r\n            <TextView\r\n                android:layout_below=\"@+id/movie_title\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:id=\"@+id/movie_overview\"\r\n                android:layout_margin=\"5dp\"\r\n                android:text=\"OverView : \"/>\r\n\r\n            <TextView\r\n                android:layout_below=\"@+id/movie_overview\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:id=\"@+id/movie_rating\"\r\n                android:textSize=\"15sp\"\r\n                android:layout_margin=\"5dp\"\r\n                android:text=\"Rating : \"/>\r\n\r\n\r\n        </RelativeLayout>\r\n\r\n    </androidx.cardview.widget.CardView>\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/movie_item.xml	(revision 61a4c978ac69ba994ef57334880886fe51db07b6)
++++ app/src/main/res/layout/movie_item.xml	(date 1590339868500)
+@@ -16,7 +16,7 @@
+ 
+             <ImageView
+                 android:layout_width="match_parent"
+-                android:layout_height="240dp"
++                android:layout_height="320dp"
+                 android:layout_centerHorizontal="true"
+                 android:id="@+id/movie_photo"
+                 android:scaleType="centerCrop"
+@@ -37,6 +37,7 @@
+                 android:layout_height="wrap_content"
+                 android:id="@+id/movie_overview"
+                 android:layout_margin="5dp"
++                android:visibility="gone"
+                 android:text="OverView : "/>
+ 
+             <TextView
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.example.newssecond\">\r\n    <uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />\r\n    <uses-permission android:name=\"android.permission.INTERNET\"/>\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\">\r\n        <activity android:name=\".MainActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 61a4c978ac69ba994ef57334880886fe51db07b6)
++++ app/src/main/AndroidManifest.xml	(date 1590338391378)
+@@ -18,6 +18,8 @@
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
++        <activity android:name=".MovieDetail"
++            android:parentActivityName=".MainActivity"></activity>
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+Index: app/src/main/java/com/example/newssecond/MovieDetail.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.newssecond\r\n\r\nimport android.os.Bundle\r\nimport android.util.Log\r\nimport android.widget.ImageView\r\nimport android.widget.TextView\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport com.bumptech.glide.Glide\r\n\r\n\r\nclass MovieDetail : AppCompatActivity() {\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        Log.d(\"Detail\",\"OnCreate: Successful\")\r\n        setContentView(R.layout.movie_item)\r\n        val poster_text: String? = intent.getStringExtra(\"poster\")\r\n        val title_text: String? = intent.getStringExtra(\"title\")\r\n        val overview_text: String? = intent.getStringExtra(\"overview\")\r\n        val ratingtext: String? = intent.getStringExtra(\"rating\")\r\n\r\n        val photo: ImageView = findViewById(R.id.movie_photo)\r\n        val title: TextView = findViewById(R.id.movie_title)\r\n        val overview: TextView = findViewById(R.id.movie_overview)\r\n        val rating: TextView = findViewById(R.id.movie_rating)\r\n\r\n\r\n        Glide.with(this).load(poster_text).into(photo)\r\n        title.text = \"Title: $title_text\"\r\n        overview.text = \"Overview: $overview_text\"\r\n        rating.text = \"Rating: $ratingtext\"\r\n        if (ratingtext.isNullOrEmpty()) {\r\n            rating.text = \"Rating: 1\"\r\n        } else {\r\n\r\n            rating.text = \"Rating: $ratingtext\"\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/newssecond/MovieDetail.kt	(revision 61a4c978ac69ba994ef57334880886fe51db07b6)
++++ app/src/main/java/com/example/newssecond/MovieDetail.kt	(date 1590339304955)
+@@ -1,7 +1,10 @@
+ package com.example.newssecond
+ 
++import android.annotation.SuppressLint
+ import android.os.Bundle
+ import android.util.Log
++import android.view.MenuItem
++import android.view.View
+ import android.widget.ImageView
+ import android.widget.TextView
+ import androidx.appcompat.app.AppCompatActivity
+@@ -10,30 +13,32 @@
+ 
+ class MovieDetail : AppCompatActivity() {
+ 
++    @SuppressLint("SetTextI18n")
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         Log.d("Detail","OnCreate: Successful")
+         setContentView(R.layout.movie_item)
++
+         val poster_text: String? = intent.getStringExtra("poster")
+         val title_text: String? = intent.getStringExtra("title")
+         val overview_text: String? = intent.getStringExtra("overview")
+         val ratingtext: String? = intent.getStringExtra("rating")
+ 
++        supportActionBar?.title = title_text
++        supportActionBar?.setDisplayHomeAsUpEnabled(false)
++
++
+         val photo: ImageView = findViewById(R.id.movie_photo)
+         val title: TextView = findViewById(R.id.movie_title)
+         val overview: TextView = findViewById(R.id.movie_overview)
+         val rating: TextView = findViewById(R.id.movie_rating)
+ 
++        overview.visibility = View.VISIBLE
+ 
+         Glide.with(this).load(poster_text).into(photo)
+         title.text = "Title: $title_text"
+         overview.text = "Overview: $overview_text"
+         rating.text = "Rating: $ratingtext"
+-        if (ratingtext.isNullOrEmpty()) {
+-            rating.text = "Rating: 1"
+-        } else {
+-
+-            rating.text = "Rating: $ratingtext"
+-        }
+     }
++
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/newssecond/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.newssecond\r\n\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport android.os.Bundle\r\nimport android.view.View\r\nimport android.widget.Toast\r\nimport androidx.recyclerview.widget.LinearLayoutManager\r\nimport kotlinx.android.synthetic.main.activity_main.*\r\nimport retrofit2.Call\r\nimport retrofit2.Callback\r\nimport retrofit2.Response\r\n\r\nclass MainActivity : AppCompatActivity() {\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_main)\r\n        val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)\r\n        val call = request.getMovies(getString(R.string.api_key))\r\n\r\n        call.enqueue(object : Callback<PopularMovies>{\r\n            override fun onResponse(call: Call<PopularMovies>, response: Response<PopularMovies>) {\r\n                if (response.isSuccessful){\r\n                    progress_bar.visibility = View.GONE\r\n                    recyclerView.apply {\r\n                        setHasFixedSize(true)\r\n                        layoutManager = LinearLayoutManager(this@MainActivity)\r\n                        adapter = MoviesAdapter(response.body()!!.results,this@MainActivity)\r\n                    }\r\n                }\r\n            }\r\n            override fun onFailure(call: Call<PopularMovies>, t: Throwable) {\r\n                Toast.makeText(this@MainActivity, \"${t.message}\", Toast.LENGTH_SHORT).show()\r\n            }\r\n        })\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/newssecond/MainActivity.kt	(revision 61a4c978ac69ba994ef57334880886fe51db07b6)
++++ app/src/main/java/com/example/newssecond/MainActivity.kt	(date 1590336321998)
+@@ -15,13 +15,24 @@
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         setContentView(R.layout.activity_main)
++
++        swiperefresh.setOnRefreshListener {
++            fetchMovies()
++        }
++
++        fetchMovies()
++
++    }
++    private fun fetchMovies()
++    {
++        swiperefresh.isRefreshing = true
+         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
+         val call = request.getMovies(getString(R.string.api_key))
+ 
+         call.enqueue(object : Callback<PopularMovies>{
+             override fun onResponse(call: Call<PopularMovies>, response: Response<PopularMovies>) {
++                swiperefresh.isRefreshing = false
+                 if (response.isSuccessful){
+-                    progress_bar.visibility = View.GONE
+                     recyclerView.apply {
+                         setHasFixedSize(true)
+                         layoutManager = LinearLayoutManager(this@MainActivity)
+@@ -30,6 +41,7 @@
+                 }
+             }
+             override fun onFailure(call: Call<PopularMovies>, t: Throwable) {
++                swiperefresh.isRefreshing = false
+                 Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+             }
+         })
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\napply plugin: 'kotlin-android'\r\napply plugin: 'kotlin-android-extensions'\r\n\r\nandroid {\r\n    compileSdkVersion 29\r\n    buildToolsVersion \"29.0.3\"\r\n\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n    defaultConfig {\r\n        applicationId \"com.example.newssecond\"\r\n        minSdkVersion 26\r\n        targetSdkVersion 29\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n\r\n}\r\n\r\n\r\ndependencies {\r\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version\"\r\n    implementation 'androidx.appcompat:appcompat:1.1.0'\r\n    implementation 'androidx.core:core-ktx:1.2.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'\r\n    testImplementation 'junit:junit:4.12'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.1'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'\r\n\r\n    implementation 'com.squareup.retrofit2:retrofit:2.7.0'\r\n    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'\r\n    implementation 'com.squareup.okhttp3:okhttp:3.10.0'\r\n\r\n    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'\r\n\r\n    implementation 'com.google.code.gson:gson:2.8.5'\r\n    implementation 'androidx.cardview:cardview:1.0.0'\r\n    implementation 'androidx.recyclerview:recyclerview:1.1.0'\r\n    implementation 'com.github.bumptech.glide:glide:4.10.0' //Glide\r\n    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 61a4c978ac69ba994ef57334880886fe51db07b6)
++++ app/build.gradle	(date 1590335683173)
+@@ -36,20 +36,22 @@
+     implementation 'androidx.appcompat:appcompat:1.1.0'
+     implementation 'androidx.core:core-ktx:1.2.0'
+     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+-    testImplementation 'junit:junit:4.12'
++    testImplementation 'junit:junit:4.13'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+ 
+-    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
+-    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
+-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
++    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
++    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
++    implementation 'com.squareup.okhttp3:okhttp:4.3.1'
+ 
+-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
++    implementation 'com.squareup.okhttp3:logging-interceptor:4.3.1'
+ 
+     implementation 'com.google.code.gson:gson:2.8.5'
+     implementation 'androidx.cardview:cardview:1.0.0'
+     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+-    implementation 'com.github.bumptech.glide:glide:4.10.0' //Glide
++    implementation 'com.github.bumptech.glide:glide:4.10.0'
+     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+ 
++    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
++
+ }
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".MainActivity\">\r\n    <TextView\r\n        android:layout_centerHorizontal=\"true\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Upcoming Movies\"\r\n        android:layout_margin=\"20dp\"\r\n        android:id=\"@+id/title\"\r\n        android:textSize=\"20sp\"/>\r\n\r\n    <androidx.recyclerview.widget.RecyclerView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_margin=\"10dp\"\r\n        android:layout_below=\"@+id/title\"\r\n        android:id=\"@+id/recyclerView\"\r\n        />\r\n\r\n    <ProgressBar\r\n        android:id=\"@+id/progress_bar\"\r\n        style=\"@style/Widget.AppCompat.ProgressBar.Horizontal\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"5dp\"\r\n        android:scaleY=\"4\"\r\n        android:indeterminateTint=\"@color/colorPrimary\"\r\n        android:indeterminateBehavior=\"repeat\"\r\n        android:indeterminate=\"true\" />\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision 61a4c978ac69ba994ef57334880886fe51db07b6)
++++ app/src/main/res/layout/activity_main.xml	(date 1590337365004)
+@@ -6,6 +6,7 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     tools:context=".MainActivity">
++
+     <TextView
+         android:layout_centerHorizontal="true"
+         android:layout_width="wrap_content"
+@@ -14,7 +15,11 @@
+         android:layout_margin="20dp"
+         android:id="@+id/title"
+         android:textSize="20sp"/>
+-
++    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
++        xmlns:android="http://schemas.android.com/apk/res/android"
++        android:id="@+id/swiperefresh"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
+     <androidx.recyclerview.widget.RecyclerView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+@@ -23,13 +28,6 @@
+         android:id="@+id/recyclerView"
+         />
+ 
+-    <ProgressBar
+-        android:id="@+id/progress_bar"
+-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+-        android:layout_width="match_parent"
+-        android:layout_height="5dp"
+-        android:scaleY="4"
+-        android:indeterminateTint="@color/colorPrimary"
+-        android:indeterminateBehavior="repeat"
+-        android:indeterminate="true" />
++
++    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+ </RelativeLayout>
+\ No newline at end of file
