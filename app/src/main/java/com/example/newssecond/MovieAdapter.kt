@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.odhiambopaul.movies.ui.detail.DeleteExample
 
 
 class MoviesAdapter(val movies: List<Result>, private val context: Context) :
@@ -25,7 +24,7 @@ class MoviesAdapter(val movies: List<Result>, private val context: Context) :
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, DeleteExample::class.java).also {
+            val intent = Intent(context, MovieDetail::class.java).also {
                 it.putExtra(
                     "poster",
                     "https://image.tmdb.org/t/p/w500/" + movies[position].poster_path
@@ -33,7 +32,7 @@ class MoviesAdapter(val movies: List<Result>, private val context: Context) :
                 it.putExtra("title", movies[position].title)
                 it.putExtra("release", movies[position].release_date)
                 it.putExtra("overview", movies[position].overview)
-                it.putExtra("rating", movies[position].vote_average)
+                it.putExtra("rating", movies[position].vote_average.toString())
             }
             context.startActivity(intent)
         }

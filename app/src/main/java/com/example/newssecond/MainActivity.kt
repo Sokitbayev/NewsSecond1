@@ -15,11 +15,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        refreshLayout.setOnRefreshListener {
+            fetch()
+        }
+        fetch()
+    }
+    private fun fetch()
+    {
+        refreshLayout.isRefreshing = true
         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
         val call = request.getMovies(getString(R.string.api_key))
 
         call.enqueue(object : Callback<PopularMovies>{
             override fun onResponse(call: Call<PopularMovies>, response: Response<PopularMovies>) {
+                refreshLayout.isRefreshing = false
                 if (response.isSuccessful){
                     progress_bar.visibility = View.GONE
                     recyclerView.apply {
@@ -30,9 +40,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<PopularMovies>, t: Throwable) {
+                refreshLayout.isRefreshing = false
                 Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 }
-

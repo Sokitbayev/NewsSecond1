@@ -19,6 +19,9 @@ class MovieDetail : AppCompatActivity() {
         val overview_text: String? = intent.getStringExtra("overview")
         val ratingtext: String? = intent.getStringExtra("rating")
 
+        supportActionBar?.setTitle(title_text)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         val photo: ImageView = findViewById(R.id.movie_photo)
         val title: TextView = findViewById(R.id.movie_title)
         val overview: TextView = findViewById(R.id.movie_overview)

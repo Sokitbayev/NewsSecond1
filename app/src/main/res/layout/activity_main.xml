@@ -14,6 +14,12 @@
         android:layout_margin="20dp"
         android:id="@+id/title"
         android:textSize="20sp"/>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -22,6 +28,7 @@
         android:layout_below="@+id/title"
         android:id="@+id/recyclerView"
         />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progress_bar"
