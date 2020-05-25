@@ -9,7 +9,7 @@ object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.themoviedb.org/")
+        .baseUrl(Base_url)
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

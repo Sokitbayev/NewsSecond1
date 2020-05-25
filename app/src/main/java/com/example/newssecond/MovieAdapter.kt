@@ -1,5 +1,6 @@
 package com.example.newssecond
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -27,7 +28,7 @@ class MoviesAdapter(val movies: List<Result>, private val context: Context) :
             val intent = Intent(context, MovieDetail::class.java).also {
                 it.putExtra(
                     "poster",
-                    "https://image.tmdb.org/t/p/w500/" + movies[position].poster_path
+                    image_url + movies[position].poster_path
                 )
                 it.putExtra("title", movies[position].title)
                 it.putExtra("release", movies[position].release_date)
@@ -46,8 +47,9 @@ class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val overview: TextView = itemView.findViewById(R.id.movie_overview)
     private val rating: TextView = itemView.findViewById(R.id.movie_rating)
 
+    @SuppressLint("SetTextI18n")
     fun bind(movie: Result) {
-        Glide.with(itemView.context).load("https://image.tmdb.org/t/p/w500/" + movie.poster_path)
+        Glide.with(itemView.context).load(image_url + movie.poster_path)
             .into(photo)
         title.text = "Title: " + movie.title
         overview.text = "Overview: " + movie.overview

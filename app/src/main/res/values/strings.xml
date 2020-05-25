@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">TMDB API</string>
-    <string name="api_key">cedeea1b173a031da855ec2796787bc6</string>
     <string name="movie_image">Movie Image</string>
     <string name="title">Title:</string>
     <string name="overview">OverView:</string>
     <string name="rating">Rating:</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
 </resources>

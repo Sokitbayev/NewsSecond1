@@ -1,5 +1,6 @@
 package com.example.newssecond
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 
 class MovieDetail : AppCompatActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("Detail","OnCreate: Successful")

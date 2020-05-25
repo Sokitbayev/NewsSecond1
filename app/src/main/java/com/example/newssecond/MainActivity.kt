@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     {
         refreshLayout.isRefreshing = true
         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
-        val call = request.getMovies(getString(R.string.api_key))
+        val call = request.getMovies(api_key)
 
         call.enqueue(object : Callback<PopularMovies>{
             override fun onResponse(call: Call<PopularMovies>, response: Response<PopularMovies>) {
