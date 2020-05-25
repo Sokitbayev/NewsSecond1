@@ -16,7 +16,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="400dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/movie_photo"
                 android:scaleType="centerCrop"
@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/movie_overview"
                 android:layout_margin="5dp"
+                android:visibility="gone"
                 android:text="@string/overview"/>
 
             <TextView

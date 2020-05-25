@@ -2,6 +2,7 @@ package com.example.newssecond
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,7 @@ class MovieDetail : AppCompatActivity() {
         val overview: TextView = findViewById(R.id.movie_overview)
         val rating: TextView = findViewById(R.id.movie_rating)
 
+        overview.visibility = View.VISIBLE
 
         Glide.with(this).load(poster_text).into(photo)
         title.text = "Title: $title_text"
